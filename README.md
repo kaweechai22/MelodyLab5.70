@@ -191,3 +191,46 @@
 - แก้หน้า Wave Visualizer ให้แสดงหัวข้อย่อยครบ
 - หัวข้อย่อยเรียงเป็นรายการเหมือนหน้า Home
 - กดแล้วเข้า visualizer subpage ของหัวข้อนั้น
+
+
+## v5.23 Longitudinal Cleanup
+
+- เอา Mode Setting ออกจากหน้า Longitudinal Wave
+- ลบข้อความ 'เฉพาะหัวข้อนี้' ออกจากหน้า Longitudinal Wave
+- ย้ายปุ่มบันทึกภาพ PNG ไปอยู่ในหัวข้อ Data Export
+
+
+## v5.24 Pressure Cleanup
+
+- เอา Mode Setting ออกจากหน้า Pressure Wave
+- ลบข้อความ 'เฉพาะหัวข้อนี้' ออกจากหน้า Pressure Wave
+- ย้ายปุ่มบันทึกภาพ PNG ไปอยู่ในหัวข้อ Data Export
+
+
+## v5.25 Displacement + Transverse Cleanup
+
+- เอา Mode Setting ออกจากหน้า Displacement + Pressure และ Longitudinal / Transverse
+- ลบข้อความ 'เฉพาะหัวข้อนี้' ออกจากทั้งสองหน้า
+- ย้ายปุ่มบันทึกภาพ PNG ไปอยู่ในหัวข้อ Data Export
+
+
+## v5.26 Superposition / Beats / Standing Cleanup
+
+- เอา Mode Setting ออกจากหน้า Superposition และ Beats
+- หน้า Standing Wave เก็บ Mode Setting ไว้ แต่เปลี่ยนเป็น Air Column Setting และเหลือเฉพาะตัวเลือกที่เกี่ยวข้อง
+- ลบข้อความ 'เฉพาะหัวข้อนี้' ออกจากทั้งสามหน้า
+- ย้ายปุ่มบันทึกภาพ PNG ไปอยู่ในหัวข้อ Data Export
+
+
+## v5.27 Longitudinal Template
+- ออกแบบแม่แบบใหม่ของ Visualizer ที่หน้า Longitudinal Wave
+- เพิ่ม concept chips, observation guide, legend และ readout ที่ชัดเจนขึ้น
+- เพิ่ม value badges ในส่วน parameters
+- ปรับคำอธิบายแอมพลิจูดให้ถูกต้อง และเพิ่มเส้นกำกับแอมพลิจูดบนภาพจำลอง
+
+
+## v5.28 All Visualizer Template
+- ขยายแม่แบบใหม่ของ Visualizer ไปยังทุกหัวข้อย่อย
+- ปรับคำอธิบายและ concept chips ให้เหมาะกับแต่ละเรื่อง
+- เพิ่ม observation guide, legend, readout help และ parameter badges ทุกหน้า
+- คงรูปแบบ player และ data export ให้สอดคล้องกันทั้งระบบ

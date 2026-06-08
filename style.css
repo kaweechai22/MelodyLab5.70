@@ -1064,3 +1064,127 @@ main.wrap{
     overflow:hidden;
   }
 }
+
+
+/* v5.23 longitudinal cleanup */
+#visualizer[data-viz-mode="longitudinal"] .playerCenter{
+  justify-content:center;
+}
+#visualizer[data-viz-mode="longitudinal"] .localExportCard .actions{
+  flex-wrap:wrap;
+}
+#visualizer[data-viz-mode="longitudinal"] .localPngBtn{
+  border-color: rgba(148,163,184,.22);
+}
+
+
+/* v5.24 pressure cleanup */
+#visualizer[data-viz-mode="pressure"] .playerCenter{
+  justify-content:center;
+}
+#visualizer[data-viz-mode="pressure"] .localExportCard .actions{
+  flex-wrap:wrap;
+}
+#visualizer[data-viz-mode="pressure"] .localPngBtn{
+  border-color: rgba(148,163,184,.22);
+}
+
+
+/* v5.25 displacement + transverse cleanup */
+#visualizer[data-viz-mode="displacementPressure"] .playerCenter,
+#visualizer[data-viz-mode="transverseCompare"] .playerCenter{
+  justify-content:center;
+}
+#visualizer[data-viz-mode="displacementPressure"] .localExportCard .actions,
+#visualizer[data-viz-mode="transverseCompare"] .localExportCard .actions{
+  flex-wrap:wrap;
+}
+#visualizer[data-viz-mode="displacementPressure"] .localPngBtn,
+#visualizer[data-viz-mode="transverseCompare"] .localPngBtn{
+  border-color: rgba(148,163,184,.22);
+}
+
+
+/* v5.26 superposition beats standing cleanup */
+#visualizer[data-viz-mode="superposition"] .playerCenter,
+#visualizer[data-viz-mode="beatsViz"] .playerCenter,
+#visualizer[data-viz-mode="standingAir"] .playerCenter{
+  justify-content:center;
+}
+#visualizer[data-viz-mode="superposition"] .localExportCard .actions,
+#visualizer[data-viz-mode="beatsViz"] .localExportCard .actions,
+#visualizer[data-viz-mode="standingAir"] .localExportCard .actions{
+  flex-wrap:wrap;
+}
+#visualizer[data-viz-mode="superposition"] .localPngBtn,
+#visualizer[data-viz-mode="beatsViz"] .localPngBtn,
+#visualizer[data-viz-mode="standingAir"] .localPngBtn{
+  border-color: rgba(148,163,184,.22);
+}
+
+
+/* v5.27 longitudinal visualizer template */
+.visualizerTemplatePage .templateHead{margin-bottom:14px}
+.visualizerTemplatePage .miniTag{display:inline-flex;align-items:center;gap:8px;padding:7px 12px;border-radius:999px;background:rgba(56,189,248,.12);border:1px solid rgba(56,189,248,.35);color:#cfe9ff;font-size:.78rem;font-weight:700;letter-spacing:.02em;margin-bottom:10px}
+.visualizerTemplatePage .sectionLead{margin:8px 0 0;color:var(--muted);max-width:860px;line-height:1.55}
+.vizConceptStrip{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin:0 0 16px}
+.conceptChip{display:flex;align-items:center;gap:12px;padding:14px 16px;border-radius:20px;background:linear-gradient(180deg, rgba(15,23,42,.92), rgba(19,33,58,.9));border:1px solid rgba(148,163,184,.18);box-shadow:0 10px 25px rgba(2,6,23,.22)}
+.conceptChip.accent{border-color:rgba(255,77,109,.28)}
+.chipIcon{display:inline-flex;align-items:center;justify-content:center;width:38px;height:38px;border-radius:12px;background:rgba(99,102,241,.22);color:#fff;font-weight:800;font-size:1.1rem;flex:0 0 auto}
+.chipIcon.dot{background:rgba(255,77,109,.16);position:relative}
+.chipIcon.dot::before{content:"";width:14px;height:14px;border-radius:50%;background:#ff4d6d;box-shadow:0 0 0 3px rgba(255,255,255,.18);display:block}
+.conceptChip b{display:block;font-size:.95rem;margin-bottom:2px}
+.conceptChip small{display:block;color:var(--muted);line-height:1.35}
+.visualizerTemplateGrid{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(320px,.95fr);gap:16px;align-items:start}
+.templateMainViz,.templateControlViz,.templateExportCard{border-radius:24px;background:linear-gradient(180deg, rgba(17,24,39,.95), rgba(20,32,58,.95));box-shadow:0 18px 40px rgba(2,6,23,.26)}
+.templateMainViz{padding-bottom:16px}
+.templateUnderCanvas{display:grid;grid-template-columns:1.2fr .9fr;gap:12px;padding:12px 16px 0}
+.templateInsightCard,.templateLegendCard{background:rgba(8,15,29,.72);border:1px solid rgba(148,163,184,.16);border-radius:18px;padding:14px 16px}
+.insightTitle{font-weight:800;margin-bottom:8px;color:#eef6ff}
+.templateInsightCard ul{margin:0;padding-left:18px;color:#c7d2e5;line-height:1.5}
+.templateLegendCard{display:grid;gap:10px;align-content:start}
+.legendRow{display:flex;align-items:center;gap:10px;color:#dbeafe;font-size:.92rem}
+.legendDot{width:14px;height:14px;border-radius:50%;display:inline-block;flex:0 0 auto}
+.legendDot.cyan{background:#22d3ee}
+.legendDot.red{background:#ff4d6d;box-shadow:0 0 0 2px rgba(255,255,255,.2)}
+.legendMark{display:inline-flex;align-items:center;justify-content:center;width:14px;height:14px;color:#cbd5e1;font-weight:800}
+.templateReadout > div{min-height:96px}
+.templateReadout small{display:block;margin-top:7px;color:#9fb3c8;font-size:.78rem;line-height:1.35}
+.panelTitleRow{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;margin-bottom:10px}
+.panelTitleRow h3{margin:0}
+.panelHint{display:inline-flex;align-items:center;color:#9fb3c8;font-size:.8rem;line-height:1.35;text-align:right;max-width:220px}
+.richField{padding:2px 0 6px}
+.richField label{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap}
+.valueBadge{display:inline-flex;align-items:center;justify-content:center;padding:4px 10px;border-radius:999px;background:rgba(99,102,241,.18);border:1px solid rgba(99,102,241,.35);color:#e0e7ff;font-size:.78rem;font-weight:700}
+.miniInfoGrid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}
+.miniInfoCard{padding:12px 12px 13px;border-radius:16px;background:rgba(9,16,31,.72);border:1px solid rgba(148,163,184,.14)}
+.miniInfoCard b{display:block;font-size:.86rem;margin-bottom:6px;color:#eef6ff}
+.miniInfoCard small{display:block;color:#9fb3c8;line-height:1.38}
+.templateExportCard .actions{flex-wrap:wrap}
+#visualizer[data-viz-mode="longitudinal"] .vizPlayerBar{margin:12px 16px 0}
+#visualizer[data-viz-mode="longitudinal"] .vizReadout{padding:14px 16px 0}
+#visualizer[data-viz-mode="longitudinal"] .controlViz{padding-top:18px}
+@media (max-width: 980px){
+  .vizConceptStrip{grid-template-columns:1fr 1fr}
+  .visualizerTemplateGrid{grid-template-columns:1fr}
+  .templateUnderCanvas{grid-template-columns:1fr}
+  .panelHint{max-width:none;text-align:left}
+}
+@media (max-width: 640px){
+  .vizConceptStrip{grid-template-columns:1fr}
+  .conceptChip{padding:12px 14px}
+  .chipIcon{width:34px;height:34px;font-size:1rem}
+  .templateReadout > div{min-height:86px}
+  .miniInfoGrid{grid-template-columns:1fr}
+  .panelTitleRow{flex-direction:column}
+}
+
+
+/* v5.28 all visualizer template */
+.legendDot.yellow{background:#fbbf24}
+.legendDot.purple{background:#a855f7}
+.valueBadge.textOnly{padding-inline:12px}
+.visualizerTemplatePage .templateLegendCard .legendRow span:last-child{line-height:1.35}
+@media (max-width: 980px){
+  .visualizerTemplateGrid{grid-template-columns:1fr}
+}

@@ -169,6 +169,10 @@ function getVizParams(){
   if($("vizAmpOut")) $("vizAmpOut").textContent=A.toFixed(2);
   if($("vizSpeedOut")) $("vizSpeedOut").textContent=v.toFixed(0)+" m/s";
   if($("vizLambdaOut")) $("vizLambdaOut").textContent=lambda.toFixed(2)+" m";
+  if($("vizFreqLabel")) $("vizFreqLabel").textContent=f.toFixed(0)+" Hz";
+  if($("vizAmpLabel")) $("vizAmpLabel").textContent=A.toFixed(2);
+  if($("vizSpeedLabel")) $("vizSpeedLabel").textContent=v.toFixed(0)+" m/s";
+  if($("vizTimeLabel")) $("vizTimeLabel").textContent=speed.toFixed(1)+"×";
   return {f,A,v,speed,lambda,sub:$("vizSubMode")?.value||"closed"};
 }
 function vizGrid(ctx,c){
@@ -291,6 +295,79 @@ function drawTrackedVertical(ctx,x,y1,y2){
   ctx.setLineDash([]);
   ctx.restore();
 }
+function drawLongitudinalAnnotations(ctx, x0, x, yBase){
+  ctx.save();
+  const centerY = yBase - 84;
+  ctx.strokeStyle = "rgba(148,163,184,.9)";
+  ctx.fillStyle = "rgba(226,232,240,.96)";
+  ctx.lineWidth = 1.5;
+  ctx.font = "14px Sarabun, system-ui, sans-serif";
+
+  // equilibrium marker
+  ctx.beginPath();
+  ctx.moveTo(x0, yBase - 46);
+  ctx.lineTo(x0, yBase + 46);
+  ctx.strokeStyle = "rgba(255,255,255,.22)";
+  ctx.stroke();
+
+  // wave propagation arrow
+  ctx.strokeStyle = "rgba(56,189,248,.95)";
+  ctx.beginPath();
+  ctx.moveTo(92, 84);
+  ctx.lineTo(212, 84);
+  ctx.stroke();
+  ctx.beginPath();
+  ctx.moveTo(212,84);
+  ctx.lineTo(201,78);
+  ctx.moveTo(212,84);
+  ctx.lineTo(201,90);
+  ctx.stroke();
+  ctx.fillStyle = "#cfe9ff";
+  ctx.fillText("wave propagation", 92, 72);
+
+  // particle vibration arrow
+  ctx.strokeStyle = "rgba(251,191,36,.96)";
+  ctx.beginPath();
+  ctx.moveTo(x0-28, yBase+58);
+  ctx.lineTo(x0+28, yBase+58);
+  ctx.stroke();
+  ctx.beginPath();
+  ctx.moveTo(x0-28, yBase+58);
+  ctx.lineTo(x0-18, yBase+52);
+  ctx.moveTo(x0-28, yBase+58);
+  ctx.lineTo(x0-18, yBase+64);
+  ctx.moveTo(x0+28, yBase+58);
+  ctx.lineTo(x0+18, yBase+52);
+  ctx.moveTo(x0+28, yBase+58);
+  ctx.lineTo(x0+18, yBase+64);
+  ctx.stroke();
+  ctx.fillStyle = "#fde68a";
+  ctx.fillText("particle vibration", x0-56, yBase+78);
+
+  // amplitude marker from equilibrium to current displacement
+  ctx.strokeStyle = "rgba(167,139,250,.96)";
+  ctx.setLineDash([5,4]);
+  ctx.beginPath();
+  ctx.moveTo(x0, centerY);
+  ctx.lineTo(x, centerY);
+  ctx.stroke();
+  ctx.setLineDash([]);
+  ctx.beginPath();
+  ctx.moveTo(x0, centerY-9);
+  ctx.lineTo(x0, centerY+9);
+  ctx.moveTo(x, centerY-9);
+  ctx.lineTo(x, centerY+9);
+  ctx.stroke();
+  ctx.fillStyle = "#ddd6fe";
+  const mx = (x0 + x) / 2;
+  ctx.fillText("A = max particle displacement", Math.min(mx-58, x0+36), centerY-10);
+
+  // equilibrium label
+  ctx.fillStyle = "#cbd5e1";
+  ctx.fillText("equilibrium", x0-22, yBase-54);
+  ctx.restore();
+}
+
 function drawVizLegend(ctx,c){
   ctx.save();
   ctx.fillStyle="rgba(5,18,40,.78)";
