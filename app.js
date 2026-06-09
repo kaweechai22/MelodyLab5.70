@@ -663,6 +663,179 @@ function drawLongitudinalFinal(ctx, c, p, w, h){
   ctx.restore();
 }
 
+
+function drawPressureWaveFinal(ctx, c, p, w, h){
+  ctx.clearRect(0,0,w,h);
+
+  const bg=ctx.createLinearGradient(0,0,w,h);
+  bg.addColorStop(0,"#020817");
+  bg.addColorStop(1,"#081532");
+  ctx.fillStyle=bg;
+  ctx.fillRect(0,0,w,h);
+
+  // Subtle grid
+  ctx.strokeStyle="rgba(148,163,184,.10)";
+  ctx.lineWidth=1;
+  for(let x=0;x<w;x+=78){
+    ctx.beginPath(); ctx.moveTo(x,0); ctx.lineTo(x,h); ctx.stroke();
+  }
+  for(let y=0;y<h;y+=52){
+    ctx.beginPath(); ctx.moveTo(0,y); ctx.lineTo(w,y); ctx.stroke();
+  }
+
+  const xMin = Math.max(158, w * 0.155);
+  const xMax = w - 72;
+  const graphTop = 58;
+  const axisY = h - 44;
+  const y0 = Math.max(104, graphTop + 72);
+  const rows = 15;
+  const availableHeight = Math.max(220, axisY - y0 - 12);
+  const rowGap = availableHeight / (rows - 1);
+  const dotR = Math.max(10.5, Math.min(14.2, rowGap * 0.62));
+  const bandHeight = (rows - 1) * rowGap;
+  const yCenter = y0 + bandHeight * 0.5;
+
+  const eqX = w * 0.555;
+  const speakerX = Math.max(66, xMin - 94);
+  const phase = vizState.t * 0.105 * p.speed;
+  const k = 2 * Math.PI / 270;
+  const baseGap = Math.max(39, Math.min(48, w * 0.038));
+
+  // Speaker/source, same visual language as v5.67
+  drawSpeaker(ctx, speakerX, yCenter, 1.16);
+
+  // Canvas title
+  ctx.fillStyle="#cfe9ff";
+  ctx.font="20px Sarabun, system-ui, sans-serif";
+  ctx.textAlign="left";
+  ctx.fillText("Pressure Wave (คลื่นความดัน)", 24, 34);
+
+  // Direction arrow
+  const arrowY = y0 - 56;
+  ctx.save();
+  ctx.strokeStyle="rgba(34,211,238,.96)";
+  ctx.fillStyle="rgba(34,211,238,.96)";
+  ctx.lineWidth=4;
+  ctx.beginPath();
+  ctx.moveTo(w*0.32,arrowY);
+  ctx.lineTo(w*0.82,arrowY);
+  ctx.stroke();
+  ctx.beginPath();
+  ctx.moveTo(w*0.82,arrowY);
+  ctx.lineTo(w*0.795,arrowY-14);
+  ctx.lineTo(w*0.795,arrowY+14);
+  ctx.closePath();
+  ctx.fill();
+  ctx.font="bold 18px Sarabun, system-ui, sans-serif";
+  ctx.textAlign="center";
+  ctx.fillText("ทิศทางการเคลื่อนที่ของคลื่น", w*0.57, arrowY-16);
+  ctx.restore();
+
+  // High/low pressure bands as vertical glowing areas
+  const bandCenters=[xMin+48,xMin+218,xMin+410,xMin+600,xMin+790];
+  bandCenters.forEach((bx,i)=>{
+    const high = i % 2 === 0;
+    const g=ctx.createLinearGradient(bx-72,0,bx+72,0);
+    g.addColorStop(0,"rgba(0,0,0,0)");
+    g.addColorStop(.5, high ? "rgba(34,211,238,.20)" : "rgba(168,85,247,.15)");
+    g.addColorStop(1,"rgba(0,0,0,0)");
+    ctx.fillStyle=g;
+    ctx.fillRect(bx-78,Math.max(44,y0-24),156,bandHeight+52);
+
+    ctx.fillStyle = high ? "rgba(125,235,255,.92)" : "rgba(210,185,255,.88)";
+    ctx.font = "bold 15px Sarabun, system-ui, sans-serif";
+    ctx.textAlign = "center";
+    ctx.fillText(high ? "ความดันสูง" : "ความดันต่ำ", bx, y0 - 8);
+  });
+
+  // Pressure axis / baseline
+  ctx.save();
+  ctx.strokeStyle="rgba(255,245,220,.94)";
+  ctx.fillStyle="rgba(255,255,255,.94)";
+  ctx.lineWidth=2;
+  ctx.beginPath();
+  ctx.moveTo(xMin-34, axisY);
+  ctx.lineTo(w-46, axisY);
+  ctx.stroke();
+  ctx.beginPath();
+  ctx.moveTo(w-46, axisY);
+  ctx.lineTo(w-61, axisY-9);
+  ctx.moveTo(w-46, axisY);
+  ctx.lineTo(w-61, axisY+9);
+  ctx.stroke();
+  const tickCount = 18;
+  for(let i=0;i<tickCount;i++){
+    const tx=(xMin-30)+i*((w-xMin-48)/(tickCount-1));
+    ctx.beginPath();
+    ctx.moveTo(tx,axisY-11);
+    ctx.lineTo(tx,axisY+11);
+    ctx.stroke();
+  }
+  ctx.font="24px Sarabun, system-ui, sans-serif";
+  ctx.fillText("x", w-36, axisY+31);
+  ctx.restore();
+
+  // Particle density field:
+  // dots remain aligned in rows, but opacity/size/density cue pressure regions.
+  const baseXs=[];
+  for(let x=xMin;x<=xMax;x+=baseGap) baseXs.push(x);
+  baseXs.sort((a,b)=>a-b);
+  const obsRow = Math.floor(rows/2);
+  const obsBaseX = eqX;
+  let obsX = obsBaseX;
+  let obsY = y0 + obsRow * rowGap;
+
+  for(let row=0; row<rows; row++){
+    const y = y0 + row * rowGap;
+    for(let i=0;i<baseXs.length;i++){
+      const base = baseXs[i];
+      // For pressure-wave visualization, use local pressure phase to change
+      // particle size/brightness and slight density spacing. This represents
+      // pressure variation while preserving the wave direction along x.
+      const pressure = 0.5 + 0.5 * Math.cos(k*(base-eqX)-phase);
+      const localR = dotR * (0.74 + pressure * 0.34);
+      const x = base + Math.sin(k*(base-eqX)-phase) * 3.5;
+      const isObs = row===obsRow && Math.abs(base-obsBaseX) < baseGap/2;
+      if(isObs){
+        obsX = x; obsY = y; continue;
+      }
+      drawParticleShadow(ctx,x,y,localR);
+      drawParticleSphere(ctx,x,y,localR,"cyan");
+      if(pressure > .72){
+        ctx.save();
+        ctx.globalAlpha = (pressure - .70) * .28;
+        ctx.fillStyle = "#bff8ff";
+        ctx.beginPath(); ctx.arc(x,y,localR*1.15,0,Math.PI*2); ctx.fill();
+        ctx.restore();
+      }
+    }
+  }
+
+  // Red observation point
+  ctx.save();
+  const obsRadius = dotR + 1.9;
+  drawParticleShadow(ctx,obsX,obsY,obsRadius);
+  drawParticleSphere(ctx,obsX,obsY,obsRadius,"red");
+  ctx.restore();
+
+  // Compact pressure curve overlay to make the pressure concept explicit
+  const curve=[];
+  for(let x=xMin;x<=xMax;x+=5){
+    const pressure = Math.cos(k*(x-eqX)-phase);
+    curve.push([x, yCenter - pressure * (bandHeight * 0.18)]);
+  }
+  ctx.save();
+  ctx.strokeStyle="rgba(251,191,36,.70)";
+  ctx.lineWidth=3;
+  ctx.shadowColor="rgba(251,191,36,.45)";
+  ctx.shadowBlur=10;
+  ctx.beginPath();
+  curve.forEach(([x,y],i)=> i ? ctx.lineTo(x,y) : ctx.moveTo(x,y));
+  ctx.stroke();
+  ctx.restore();
+}
+
+
 function drawVizLegend(ctx,c){
   // legend hidden on longitudinal focus page to keep the graph clean
 }
@@ -679,6 +852,14 @@ function drawVisualizer(){
   // v5.40: force Longitudinal Wave to use the custom final renderer before the old branch.
   if(mode==="longitudinal"){
     drawLongitudinalFinal(ctx,c,p,W,H);
+    if(vizState.running) vizState.t += 1;
+    vizState.raf=requestAnimationFrame(drawVisualizer);
+    return;
+  }
+
+  // v5.68: Pressure Wave uses the same full-height mobile style as Longitudinal v5.67.
+  if(mode==="pressure"){
+    drawPressureWaveFinal(ctx,c,p,W,H);
     if(vizState.running) vizState.t += 1;
     vizState.raf=requestAnimationFrame(drawVisualizer);
     return;
@@ -1087,10 +1268,11 @@ function resizeVisualizerCanvas(){
   const cssW = Math.max(280, Math.floor(rect.width - 4));
   const isLandscape = window.matchMedia("(orientation: landscape)").matches;
   const isLongitudinal = !!document.querySelector(".visualizerSinglePage[data-viz-mode='longitudinal']");
+  const isPressure = !!document.querySelector(".visualizerSinglePage[data-viz-mode='pressure']");
 
   let cssH;
-  if(isLongitudinal){
-    // v5.66: force graph to fill the graph slot vertically on real phones.
+  if(isLongitudinal || isPressure){
+    // v5.68: force longitudinal/pressure graphs to fill the graph slot vertically on real phones.
     // Portrait: graph height is based on viewport height, not just width.
     // This makes the particle region extend from near the title to near the player bar.
     const vh = Math.max(640, window.innerHeight || 800);

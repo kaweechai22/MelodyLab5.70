@@ -2373,3 +2373,54 @@ main.wrap{
 
 /* v5.67: keep v5.66 graph size, but emphasize larger particles in the canvas renderer */
 /* No canvas-height change here: graph area intentionally remains the same size. */
+
+
+/* v5.68: apply v5.67 mobile graph format to Pressure Wave page */
+.pressureFocusPage .vizMediaFrame canvas{
+  aspect-ratio:auto !important;
+  height:46vh !important;
+  min-height:390px !important;
+  max-height:510px !important;
+}
+.pressureFocusPage .embeddedPlayerBar{
+  margin-top:2px !important;
+  min-height:48px !important;
+  padding:4px 10px 6px !important;
+}
+.pressureFocusPage .embeddedPlayerBar .playerBtn,
+.pressureFocusPage .embeddedPlayerBar .playerPrimary{
+  width:46px !important;
+  height:46px !important;
+  transform:none !important;
+}
+.pressureFocusPage .neonControlViz{
+  padding:12px 10px !important;
+}
+.pressureFocusPage .neonControlViz .panelTitleStack h3{
+  font-size:1rem !important;
+}
+.pressureFocusPage .panelSubtext{
+  display:none !important;
+}
+.pressureFocusPage .neonParamRow{
+  padding:5px 0 !important;
+  gap:4px 6px !important;
+  grid-template-columns:28px 1fr 52px !important;
+  grid-template-areas:"icon text value" ". slider slider" !important;
+}
+.pressureFocusPage .paramIcon{
+  width:26px !important;
+  height:26px !important;
+  font-size:.78rem !important;
+}
+.pressureFocusPage .paramText label{
+  font-size:.68rem !important;
+}
+.pressureFocusPage .paramText small{
+  font-size:.56rem !important;
+}
+.pressureFocusPage .neonParamRow .valueBadge{
+  min-width:50px !important;
+  font-size:.66rem !important;
+  padding:3px 5px !important;
+}
